@@ -44,8 +44,18 @@ class Game {
 
     const targetColor = this.board[0][0];
     this.moves++;
+    this.gameIsOver = (this.moves === this.maxMoves);
     if (color === targetColor) {
-      console.log(`Move ${this.moves}: No change needed. Same color as the target color.`);
+      if (this.gameIsOver) {
+        if (this.checkWinningCondition(color)) {
+          this.gameIsOver = true;
+          console.log(`You won the game in ${this.moves} moves.`);
+        } else if (this.gameIsOver) {;
+          console.log(`Game over! ${this.maxMoves} moves reached. You lost the game.`);
+        }
+      } else {
+        console.log(`Move ${this.moves}: No change needed. Same color as the target color.`); 
+      }
       return;
     }
 
@@ -53,7 +63,6 @@ class Game {
     console.log(`Move ${this.moves}: Fill board with color ${color}`);
     this.printBoard();
     
-    this.gameIsOver = (this.moves === this.maxMoves);
     if (this.checkWinningCondition(color)) {
       this.gameIsOver = true;
       console.log(`You won the game in ${this.moves} moves.`);
@@ -125,7 +134,7 @@ class Game {
 
 //  Game Initialization
 
-const maxMoves = 60;
+const maxMoves = 21;
 const game = new Game(18, maxMoves);
 console.log('Initial Board');
 game.printBoard();
