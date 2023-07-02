@@ -44,6 +44,15 @@ class Game {
 
     const targetColor = this.board[0][0];
     this.moves++;
+    if (color === targetColor) {
+      console.log(`Move ${this.moves}: No change needed. Same color as the target color.`);
+      return;
+    }
+
+    this.depthFirstSearch(0, 0, targetColor, color);
+    console.log(`Move ${this.moves}: Fill board with color ${color}`);
+    this.printBoard();
+    
     this.gameIsOver = (this.moves === this.maxMoves);
     if (this.checkWinningCondition(color)) {
       this.gameIsOver = true;
@@ -53,19 +62,9 @@ class Game {
       console.log(`Game over! ${this.maxMoves} moves reached. You lost the game.`);
       return;
     }
-
-    if (color === targetColor) {
-      console.log(`Move ${this.moves}: No change needed. Same color as the target color.`);
-      return;
-    }
-
-    this.dfs(0, 0, targetColor, color);
-
-    console.log(`Move ${this.moves}: Fill board with color ${color}`);
-    this.printBoard();
   }
 
-  dfs(row, col, targetColor, newColor) {
+  depthFirstSearch(row, col, targetColor, newColor) {
     if (
       row < 0 ||
       row >= this.boardSize ||
@@ -79,10 +78,10 @@ class Game {
     this.board[row][col] = newColor;
 
     // DFS on adjacent cells
-    this.dfs(row + 1, col, targetColor, newColor); // up
-    this.dfs(row - 1, col, targetColor, newColor); // down
-    this.dfs(row, col + 1, targetColor, newColor); // right
-    this.dfs(row, col - 1, targetColor, newColor); // left
+    this.depthFirstSearch(row + 1, col, targetColor, newColor); // up
+    this.depthFirstSearch(row - 1, col, targetColor, newColor); // down
+    this.depthFirstSearch(row, col + 1, targetColor, newColor); // right
+    this.depthFirstSearch(row, col - 1, targetColor, newColor); // left
   }
 
   checkWinningCondition(color) {
@@ -126,7 +125,7 @@ class Game {
 
 //  Game Initialization
 
-const maxMoves = 21;
+const maxMoves = 60;
 const game = new Game(18, maxMoves);
 console.log('Initial Board');
 game.printBoard();
